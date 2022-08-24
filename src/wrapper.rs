@@ -22,14 +22,17 @@ pub async fn alexa_wrapper(
         alexa_request.request_body.timestamp.clone(),
         request_body_as_bytes,
     );
+    debug!("\nauth_input: {:?}", auth_input);
     let auth_output = verifier(auth_input);
-    debug!("after auth");
+    debug!("\nauth_output: {:?}", auth_output);
     if auth_output.success == true {
         let bussiness_input = pre_processing(alexa_request, skill_info);
+        debug!("\nbussiness_input: {:?}", bussiness_input);
         match serde_json::to_value(bussiness_input) {
             Ok(_bussiness_input) => {
                 match post_data::<BussinessOutput>(bussiness_path, _bussiness_input, HashMap::new()).await {
                     Ok(bussiness_output) => {
+                        debug!("\nbussiness_output: {:?}", bussiness_output);
                         _resp = post_processing(bussiness_output).await
                     },
                     Err(e) => {error!("\nBussiness {}", e);},
@@ -40,5 +43,6 @@ pub async fn alexa_wrapper(
     }else {
         error!("\n auth failed");
     }
+    debug!("\n_resp: {:?}", _resp);
     _resp
 }
