@@ -1,7 +1,7 @@
 use flair_alexa_sdk::response::directive::Directive;
 use flair_general_utils::file_fetch::get_data;
 use flair_types::skill::io::ResponseCommand;
-use log::{error, warn};
+use log::error;
 use serde_json::{json, Value as JsonValue};
 use std::collections::HashMap;
 
@@ -41,7 +41,7 @@ pub fn control_media_helper(command: ResponseCommand) -> Directive {
             match val.parse::<i32>() {
                 Ok(int_val) => value = int_val,
                 Err(e) => {
-                    warn!("\n Not a number: {}\n", e);
+                    error!("\n Not a number: {}\n", e);
                 }
             }
         }

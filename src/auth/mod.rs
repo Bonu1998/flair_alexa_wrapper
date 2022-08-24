@@ -1,4 +1,4 @@
-use log::{error, info};
+use log::{error, info, debug};
 
 use self::io::{AlexaAuthInput, AlexaAuthOutput};
 
@@ -6,7 +6,9 @@ pub mod io;
 
 pub fn verifier(input: AlexaAuthInput) -> AlexaAuthOutput {
     info!("verifier invoked");
+    debug!("\ninput: {:?}", input);
     let verify = alexa_verifier::RequestVerifier::new();
+    let output:AlexaAuthOutput;
     match verify.verify(
         &input.signature_cert_chain_url,
         &input.signature,
@@ -15,11 +17,13 @@ pub fn verifier(input: AlexaAuthInput) -> AlexaAuthOutput {
         None,
     ) {
         Ok(()) => {
-            return AlexaAuthOutput::new(true, String::from("Authentication success"));
+            output= AlexaAuthOutput::new(true, String::from("Authentication success"));
         }
         Err(err) => {
             error!("verification failed");
-            return AlexaAuthOutput::new(true, format!("Authentication Failed: {}", err));
+            output = AlexaAuthOutput::new(true, format!("Authentication Failed: {}", err));
         }
-    }
+    };
+    debug!("\noutput: {:?}", output);
+    output
 }

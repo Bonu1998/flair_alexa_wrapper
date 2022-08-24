@@ -5,7 +5,7 @@ use serde_json::Value as JsonValue;
 pub mod helpers;
 
 use flair_alexa_sdk::request::{Request as AlexaRequest, RequestType};
-use log::{debug, error, warn};
+use log::{debug, error, warn, info};
 
 use self::helpers::get_device_size;
 
@@ -13,6 +13,9 @@ pub fn pre_processing(
     input: AlexaRequest,
     mut skill_info: HashMap<String, String>,
 ) -> BussinessInput {
+    info!("\npre_processing invoked");
+    debug!("\ninput: {:?}", input);
+    debug!("\nskill_info: {:?}", skill_info);
     let mut args: Vec<HashMap<String, String>> = Vec::new();
 
     let is_display_enabled = input.is_apl_supported();
@@ -126,7 +129,7 @@ pub fn pre_processing(
         },
         Err(e) => warn!("\n{}", e),
     }
-    BussinessInput {
+    let output = BussinessInput {
         request_type: "ALEXA".to_string(),
         action,
         user_id,
@@ -137,5 +140,7 @@ pub fn pre_processing(
         locale,
         args,
         extras: Some(extras)
-    }
+    };
+    debug!("\noutput: {:?}", output);
+    output
 }

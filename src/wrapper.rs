@@ -2,7 +2,7 @@ use bincode;
 use flair_alexa_sdk::{request::Request as AlexaRequest, response::Response as AlexaResponse};
 use flair_general_utils::file_fetch::post_data;
 use flair_types::skill::io::BussinessOutput;
-use log::{error, debug};
+use log::{error, debug, info};
 use std::collections::HashMap;
 
 use crate::{auth::{io::AlexaAuthInput, verifier}, pre_processing::pre_processing, post_processing::post_processing};
@@ -14,6 +14,7 @@ pub async fn alexa_wrapper(
     signature_cert_chain_url: String,
     bussiness_path: String,
 ) -> AlexaResponse {
+    info!("\nalexa_wrapper invoked");
     let mut _resp = AlexaResponse::default_session_close();
     let request_body_as_bytes = bincode::serialize(&alexa_request).unwrap_or_default();
     let auth_input = AlexaAuthInput::new(
@@ -22,17 +23,13 @@ pub async fn alexa_wrapper(
         alexa_request.request_body.timestamp.clone(),
         request_body_as_bytes,
     );
-    debug!("\nauth_input: {:?}", auth_input);
     let auth_output = verifier(auth_input);
-    debug!("\nauth_output: {:?}", auth_output);
     if auth_output.success == true {
         let bussiness_input = pre_processing(alexa_request, skill_info);
-        debug!("\nbussiness_input: {:?}", bussiness_input);
         match serde_json::to_value(bussiness_input) {
             Ok(_bussiness_input) => {
                 match post_data::<BussinessOutput>(bussiness_path, _bussiness_input, HashMap::new()).await {
                     Ok(bussiness_output) => {
-                        debug!("\nbussiness_output: {:?}", bussiness_output);
                         _resp = post_processing(bussiness_output).await
                     },
                     Err(e) => {error!("\nBussiness {}", e);},
@@ -43,6 +40,5 @@ pub async fn alexa_wrapper(
     }else {
         error!("\n auth failed");
     }
-    debug!("\n_resp: {:?}", _resp);
     _resp
 }

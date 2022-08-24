@@ -1,11 +1,13 @@
 use self::helpers::{control_media_helper, render_template, send_event_helper};
 use flair_alexa_sdk::response::{speech::Speech, Response as AlexaResponse};
 use flair_types::skill::io::BussinessOutput;
-use log::{error, warn};
+use log::{error, warn, info, debug};
 
 mod helpers;
 
 pub async fn post_processing(input: BussinessOutput) -> AlexaResponse {
+    info!("\npost_processing invoked");
+    debug!("\ninput: {:?}", input);
     let mut _resp = AlexaResponse::new("1.0".to_string());
     // prompt speech
     if let Some(prompt_speech) = input.prompt_speech {
@@ -48,5 +50,6 @@ pub async fn post_processing(input: BussinessOutput) -> AlexaResponse {
             }
         }
     }
+    debug!("\noutput: {:?}", _resp);
     _resp
 }
