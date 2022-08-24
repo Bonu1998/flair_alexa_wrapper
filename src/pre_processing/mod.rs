@@ -5,7 +5,7 @@ use serde_json::Value as JsonValue;
 pub mod helpers;
 
 use flair_alexa_sdk::request::{Request as AlexaRequest, RequestType};
-use log::{debug, error, warn, info};
+use log::{debug, error, info};
 
 use self::helpers::get_device_size;
 
@@ -127,7 +127,7 @@ pub fn pre_processing(
         Ok(data) => {
             extras.insert("session_data".to_string(), data);
         },
-        Err(e) => warn!("\n{}", e),
+        Err(e) => debug!("\n{}", e),
     }
     let output = BussinessInput {
         request_type: "ALEXA".to_string(),
