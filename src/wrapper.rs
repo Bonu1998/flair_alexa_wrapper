@@ -1,10 +1,11 @@
 use bincode;
 use flair_alexa_sdk::{request::Request as AlexaRequest, response::Response as AlexaResponse};
 use flair_general_utils::file_fetch::post_data;
+use flair_types::skill::io::BussinessOutput;
 use log::{error, debug};
 use std::collections::HashMap;
 
-use crate::{auth::{io::AlexaAuthInput, verifier}, pre_processing::pre_processing, io::BussinessOutput, post_processing::post_processing};
+use crate::{auth::{io::AlexaAuthInput, verifier}, pre_processing::pre_processing, post_processing::post_processing};
 
 pub async fn alexa_wrapper(
     skill_info: HashMap<String, String>,

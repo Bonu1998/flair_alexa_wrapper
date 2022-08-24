@@ -1,6 +1,6 @@
-use crate::io::ResponseCommand;
 use flair_alexa_sdk::response::directive::Directive;
 use flair_general_utils::file_fetch::get_data;
+use flair_types::skill::io::ResponseCommand;
 use log::{error, warn};
 use serde_json::{json, Value as JsonValue};
 use std::collections::HashMap;

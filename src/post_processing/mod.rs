@@ -1,6 +1,6 @@
 use self::helpers::{control_media_helper, render_template, send_event_helper};
 use flair_alexa_sdk::response::{speech::Speech, Response as AlexaResponse};
-use crate::io::BussinessOutput;
+use flair_types::skill::io::BussinessOutput;
 use log::{error, warn};
 
 mod helpers;

@@ -1,12 +1,11 @@
 use std::collections::HashMap;
+use flair_types::skill::io::{BussinessInput, ActionType};
 use serde_json::Value as JsonValue;
 
 pub mod helpers;
 
 use flair_alexa_sdk::request::{Request as AlexaRequest, RequestType};
 use log::{debug, error, warn};
-
-use crate::io::{ActionType, BussinessInput};
 
 use self::helpers::get_device_size;
 
