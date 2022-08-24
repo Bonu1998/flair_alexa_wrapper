@@ -1,0 +1,16 @@
+[package]
+name = "flair_alexa_wrapper"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+flair_alexa_sdk = { git = "https://github.com/Bonu1998/flair_alexa_sdk.git", branch = "latest" }
+flair_general_utils = { git = "https://github.com/Bonu1998/flair_general_utils.git", branch = "latest" }
+
+serde = { version = "1.0.139", features = ["derive"] }
+serde_json = { version = "1.0.82" }
+log = { version = "0.4.1" }
+alexa-verifier = { version = "0.2.1" }
+bincode = { version = "1.3.3" }
